@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Dusk TV — capa</title>
+<style>
+  /* Capa 1280×640 (tamanho do "social preview" do GitHub). Renderizada para PNG com o Edge headless.
+     Fundo: a paisagem azul do próprio app (web/wallpapers/paisagem-2.jpg), espelhada para a lua ficar acima da TV. */
+  @font-face { font-family: 'Inter'; src: url('../../web/Inter.woff') format('woff'); font-weight: 100 900; }
+  html, body { margin: 0; width: 1280px; height: 640px; overflow: hidden; background: #0B0D1A; }
+  body { font-family: 'Inter', 'Segoe UI', sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+
+  #cover { position: relative; width: 1280px; height: 640px; overflow: hidden; }
+  #bg { position: absolute; left: 0; right: 0; top: -110px; bottom: 0; background: url('../../web/wallpapers/paisagem-2.jpg') center top / cover no-repeat;
+    transform: scaleX(-1); }
+  /* Sombra à esquerda, como no app, para o texto branco ler bem */
+  #shade { position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(5, 6, 18, .55) 0%, rgba(5, 6, 18, .25) 45%, rgba(5, 6, 18, 0) 65%),
+      linear-gradient(180deg, rgba(5, 6, 18, 0) 60%, rgba(5, 6, 18, .45) 100%); }
+
+  /* Texto */
+  #text { position: absolute; left: 80px; top: 50%; transform: translateY(-50%); width: 530px; z-index: 3; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand img { width: 76px; height: 76px; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+  h1 { margin: 0; font-size: 84px; font-weight: 800; letter-spacing: -3px; line-height: 1; }
+  h1 span { background: linear-gradient(90deg, #FFD08A, #FF9A5C); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ver { align-self: flex-start; margin-top: 6px; font-size: 14px; font-weight: 700; padding: 5px 10px; border-radius: 8px;
+    background: rgba(140, 178, 243, .18); border: 1px solid rgba(140, 178, 243, .45); color: #C9DAFB; }
+  .tag { max-width: 480px; margin: 30px 0 0; font-size: 27px; font-weight: 500; line-height: 1.32; color: rgba(255,255,255,.95); letter-spacing: -0.3px; }
+  .sub { max-width: 480px; margin: 16px 0 0; font-size: 18px; line-height: 1.5; color: rgba(255,255,255,.72); }
+  .chips { display: flex; gap: 8px; margin-top: 32px; flex-wrap: wrap; }
+  .chip { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; padding: 8px 15px 8px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.94); }
+  .chip i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+  .chip small { font-size: 12px; font-weight: 600; opacity: .6; }
+
+  /* TV */
+  #tv { position: absolute; left: 640px; top: 50%; margin-top: -212px; width: 720px; z-index: 2; transform-origin: 0 50%;
+    transform: perspective(1800px) rotateY(-14deg) rotateX(3deg); }
+  .bezel { padding: 8px; border-radius: 13px; background: linear-gradient(160deg, #2A2C38, #0E0F15);
+    box-shadow: 0 40px 80px rgba(4, 6, 20, .65), 0 0 0 1px rgba(255,255,255,.08) inset; }
+  .bezel img { display: block; width: 100%; border-radius: 6px; }
+  .glare { position: absolute; inset: 8px; border-radius: 6px; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 35%); }
+  .glow { position: absolute; left: 6%; right: 6%; bottom: -46px; height: 50px;
+    background: radial-gradient(ellipse at center, rgba(150, 170, 255, .30), rgba(150, 170, 255, 0) 70%); filter: blur(6px); }
+</style>
+</head>
+<body>
+<div id="cover">
+  <div id="bg"></div>
+  <div id="shade"></div>
+
+  <div id="text">
+    <div class="brand">
+      <img src="../../tizen/icon.png" alt="">
+      <h1>Dusk <span>TV</span></h1>
+      <span class="ver">v2.1</span>
+    </div>
+    <p class="tag">Uma tela inicial limpa e rápida para Smart TVs Samsung, LG e Android TV.</p>
+    <p class="sub">Fotos que mudam sozinhas, seus apps com os logos de verdade, relógio, Wi-Fi e clima. Sem propaganda.</p>
+    <div class="chips">
+      <span class="chip"><i style="background:#6E8BFF"></i>Samsung Tizen</span>
+      <span class="chip"><i style="background:#FF4F86"></i>LG webOS <small>beta</small></span>
+      <span class="chip"><i style="background:#3DDC84"></i>Android TV <small>beta</small></span>
+    </div>
+  </div>
+
+  <div id="tv">
+    <div class="bezel"><img src="../screenshots/inicio.png" alt=""></div>
+    <div class="glare"></div>
+    <div class="glow"></div>
+  </div>
+</div>
+</body>
+</html>

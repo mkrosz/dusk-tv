@@ -1,5 +1,7 @@
 ﻿<div align="center">
 
+<img src="docs/capa/capa@2x.png" alt="Dusk TV: uma tela inicial limpa e rápida para Smart TVs Samsung, LG e Android TV" width="100%">
+
 # 🌅 Dusk TV
 
 **Uma tela inicial limpa, rápida e personalizável para Smart TVs Samsung (Tizen), LG (webOS) e Android TV / Google TV.**
