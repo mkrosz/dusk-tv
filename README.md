@@ -83,7 +83,7 @@ Logo da Samsung, abas, relógio, força do sinal do **Wi-Fi** (ou o ícone de ca
 do tempo e a temperatura. Ao chegar nele, abre a previsão com o local, a máxima e a mínima, a chance de chuva, a
 sensação, a umidade, o vento e as próximas 6 horas; ◀ ou ▼ fecham.
 
-<img src="docs/screenshots/topo.png" alt="Barra superior com relógio e Wi-Fi" width="100%">
+<img src="docs/screenshots/topo.png" alt="Barra superior com relógio, Wi-Fi e a previsão do tempo aberta" width="100%">
 
 ---
 
