@@ -1,5 +1,5 @@
 ﻿/*
- * Dusk TV: the home screen, for Samsung (Tizen) and LG (webOS) TVs. Three tabs (Início, Apps, Ajustes), a clock,
+ * Dusk TV: the home screen, for Samsung (Tizen), LG (webOS) and Android TVs. Three tabs (Início, Apps, Ajustes), a clock,
  * the network and the weather, moved with the remote's arrows. Plain ES5, like tv.js.
  */
 (function () {
@@ -74,9 +74,17 @@
       name: 'LG', logo: 'logos/lg.svg', store: 'com.webos.app.discovery', storeColor: '#A50034',
       account: 'Conta LG', game: false, notifications: false,
       where: {network: 'Geral → Rede', account: 'Geral → Conta LG', privacy: 'Suporte → Privacidade e termos'}
+    },
+    // Android TV and Google TV come from many makers: the corner shows the maker's name ("TCL", "Sony"), and the
+    // Android app opens most settings pages directly.
+    android: {
+      name: TV.maker || 'Android TV', logo: '', store: 'com.android.vending', storeColor: '#01875F',
+      account: 'Conta Google', game: false, notifications: false,
+      where: {network: 'Rede e Internet', account: 'Contas e login', privacy: 'Privacidade'}
     }
   };
-  var PLATFORM = (/[?&]tv=(lg|samsung)\b/.exec(location.search) || [])[1] || (TV.name === 'webos' ? 'lg' : 'samsung');
+  var PLATFORM = (/[?&]tv=(lg|samsung|android)\b/.exec(location.search) || [])[1] ||
+      (TV.name === 'webos' ? 'lg' : TV.name === 'android' ? 'android' : 'samsung');
   var BRAND = BRANDS[PLATFORM];
 
   // The TV's app store (Samsung's "Apps", LG Content Store): its own tile in the Apps tab, not one of the apps.
@@ -550,6 +558,10 @@
     } else if (item.icon) {
       var img = new Image();
       img.onerror = function () { card.innerHTML = ''; card.appendChild(word(item.title, card.style.background)); };
+      // Android TV's banners are 16:9 tiles of their own: they fill the card; square icons stay centered.
+      if (item.icon.indexOf('https://dusk.icon/') === 0) {
+        img.onload = function () { if (img.naturalWidth > img.naturalHeight * 1.4) img.className = 'fill'; };
+      }
       img.src = item.icon;
       card.appendChild(img);
     } else {
@@ -665,6 +677,8 @@
     var ins = $('#settings .grid.inputs');
     ins.innerHTML = '';
     inputs.forEach(function (x, i) { ins.appendChild(tile(x, i)); });
+    // A box without inputs (an Android TV stick) has no Inputs section.
+    ins.style.display = ins.previousElementSibling.style.display = inputs.length ? '' : 'none';
 
     var personal = $('#settings .personal');
     personal.innerHTML = '';
@@ -735,7 +749,10 @@
         if (apps[i].title.toLowerCase() === n && out.indexOf(apps[i].id) < 0) { out.push(apps[i].id); return; }
       }
     });
-    for (var i = 0; out.length < 5 && i < apps.length; i++) if (out.indexOf(apps[i].id) < 0) out.push(apps[i].id);
+    // Up to 5 with whatever the TV has; the store has its own tile in Apps.
+    for (var i = 0; out.length < 5 && i < apps.length; i++) {
+      if (out.indexOf(apps[i].id) < 0 && apps[i].id !== STORE_ID) out.push(apps[i].id);
+    }
     return out;
   }
 

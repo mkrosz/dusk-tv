@@ -2,14 +2,15 @@
 
 # 🌅 Dusk TV
 
-**Uma tela inicial limpa, rápida e personalizável para Smart TVs Samsung (Tizen) e LG (webOS).**
+**Uma tela inicial limpa, rápida e personalizável para Smart TVs Samsung (Tizen), LG (webOS) e Android TV / Google TV.**
 
 Fotos que mudam sozinhas, do tipo que você escolher, seus apps com os logos de verdade, relógio, Wi-Fi e clima. Sem propaganda,
 sem fileiras patrocinadas.
 
-![Versão](https://img.shields.io/badge/versão-2.0.0-8CB2F3?style=for-the-badge)
+![Versão](https://img.shields.io/badge/versão-2.1.0-8CB2F3?style=for-the-badge)
 ![Samsung Tizen](https://img.shields.io/badge/Samsung-Tizen%203.0%2B-1428A0?style=for-the-badge&logo=samsung&logoColor=white)
 ![LG webOS](https://img.shields.io/badge/LG-webOS%20(experimental)-A50034?style=for-the-badge&logo=lg&logoColor=white)
+![Android TV](https://img.shields.io/badge/Android%20TV-Google%20TV%20(experimental)-3DDC84?style=for-the-badge&logo=androidtv&logoColor=white)
 ![Testado em](https://img.shields.io/badge/feito%20para-UN60AU8000%20(2021)-0F172A?style=for-the-badge)
 ![Licença MIT](https://img.shields.io/badge/licença-MIT-2EA44F?style=for-the-badge)
 
@@ -35,10 +36,10 @@ de Ajustes seguem a marca da TV sozinhos.
 | --- | --- | --- | --- |
 | **Samsung** (Tizen 3.0+, 2017 em diante) | ✅ Testado numa UN60AU8000 | `DuskTV.wgt`, gerado e assinado no seu computador | [Instalação na Samsung](#-instalação-na-samsung) |
 | **LG** (webOS 3.0+, 2016 em diante) | 🧪 Experimental: ainda não testado numa TV de verdade | `DuskTV-LG.ipk`, pronto na [página de releases](../../releases/latest) | [Instalação na LG](#-instalação-na-lg-experimental) |
-| **Android TV / Google TV** | 🛠️ Planejado | Ainda não existe | Acompanhe nas [issues](../../issues) |
+| **Android TV / Google TV** (Android 5.0+) | 🧪 Experimental: testado só no emulador do Google TV | `DuskTV-Android.apk`, pronto na [página de releases](../../releases/latest) | [Instalação no Android TV](#-instalação-no-android-tv-experimental) |
 
-> Tem uma LG? Instale, use e conte numa [issue](../../issues) como foi, com o modelo da TV. É assim que ela sai do
-> "experimental".
+> Tem uma LG ou uma Android TV? Instale, use e conte numa [issue](../../issues) como foi, com o modelo da TV. É
+> assim que elas saem do "experimental".
 
 ---
 
@@ -50,6 +51,7 @@ de Ajustes seguem a marca da TV sozinhos.
 - [Tecnologias](#-tecnologias)
 - [Instalação na Samsung](#-instalação-na-samsung)
 - [Instalação na LG (experimental)](#-instalação-na-lg-experimental)
+- [Instalação no Android TV (experimental)](#-instalação-no-android-tv-experimental)
 - [Personalização](#-personalização)
 - [Estrutura do projeto](#-estrutura-do-projeto)
 - [Limites das TVs](#-limites-das-tvs)
@@ -78,7 +80,7 @@ está aberto.
 
 ### Ajustes
 Entradas (TV ao vivo e HDMI 1 a 4, com um ponto verde quando há um aparelho ligado), plano de fundo, Rede e
-Wi-Fi, Conta Samsung (ou Conta LG), Privacidade e os Ajustes da TV. Na Samsung, também **Ajustes de jogo**
+Wi-Fi, Conta Samsung (ou Conta LG, ou Conta Google), Privacidade e os Ajustes da TV. Na Samsung, também **Ajustes de jogo**
 (controladores, saída de som e imagem de jogo) e Notificações (em teste).
 
 <img src="docs/screenshots/ajustes.png" alt="Aba de ajustes" width="100%">
@@ -103,7 +105,7 @@ sensação, a umidade, o vento e as próximas 6 horas; ◀ ou ▼ fecham.
 - 🎨 **Logos de verdade** para cerca de 30 apps: Netflix, YouTube, Prime Video, Globoplay, Disney+, HBO Max,
   Apple TV, Spotify, Twitch, Crunchyroll, Plex, Paramount+, PlayStation, Xbox e outros.
 - ⭐ **Favoritos editáveis pelo controle:** adicionar, tirar e reorganizar. Na aba Apps, eles ficam numa seção separada.
-- 🛍️ **Loja de apps** da TV (a da Samsung ou a LG Content Store) a um clique, na aba Apps.
+- 🛍️ **Loja de apps** da TV (a da Samsung, a LG Content Store ou o Google Play) a um clique, na aba Apps.
 - 📶 **Status da rede** em tempo real: força do Wi-Fi ou cabo.
 - 🌤️ **Clima na barra:** temperatura e ícone do tempo agora. Ao passar por ele, abre a previsão do dia e das
   próximas 6 horas. Vem do [Open-Meteo](https://open-meteo.com), sem chave, para a cidade da sua internet (ou a que
@@ -114,19 +116,19 @@ sensação, a umidade, o vento e as próximas 6 horas; ◀ ou ▼ fecham.
 - 🔌 **Entradas HDMI** com status de conexão.
 - ⚙️ **Identidade visual** num só arquivo: logo, cor de destaque, tipo de fundo e favoritos iniciais.
 - 🪶 **Leve e rápido:** JavaScript puro, sem frameworks, sem sombras e sem blur. Os favoritos aparecem em cerca de 0,5 s, e a navegação roda a 60 quadros por segundo, medido numa UN60AU8000.
-- 📺 **Samsung e LG:** o mesmo app nas duas marcas, com o logo, a loja e os atalhos de cada uma.
+- 📺 **Samsung, LG e Android TV:** o mesmo app nas três, com o logo (ou o nome da marca), a loja e os atalhos de cada uma.
 - ↩️ **Reversível:** não mexe no sistema da TV, no botão Home nem no Smart Hub.
 
 ---
 
 ## 📺 Compatibilidade
 
-| | Samsung | LG |
-| --- | --- | --- |
-| **Testado em** | UN60AU8000GXZD (Crystal UHD 2021, Tizen 6.0) | Ainda em nenhuma (experimental) |
-| **Deve funcionar em** | Tizen 3.0 ou mais novo (2017 em diante) | webOS 3.0 ou mais novo (2016 em diante) |
-| **Instalação** | Modo Desenvolvedor e certificado: Tizen comum (2015 a 2022) ou Samsung (2023 em diante) | App Developer Mode da LG, com conta gratuita de desenvolvedor |
-| **Resolução da interface** | 1920×1080, ajustada à tela | 1920×1080 (TVs 4K) ou 1280×720 (Full HD e HD), ajustada à tela |
+| | Samsung | LG | Android TV / Google TV |
+| --- | --- | --- | --- |
+| **Testado em** | UN60AU8000GXZD (Crystal UHD 2021, Tizen 6.0) | Ainda em nenhuma (experimental) | Emulador do Google TV (Android 14) |
+| **Deve funcionar em** | Tizen 3.0 ou mais novo (2017 em diante) | webOS 3.0 ou mais novo (2016 em diante) | Android 5.0 ou mais novo: TVs Sony, TCL, Philips e outras, Chromecast, Mi Box |
+| **Instalação** | Modo Desenvolvedor e certificado: Tizen comum (2015 a 2022) ou Samsung (2023 em diante) | App Developer Mode da LG, com conta gratuita de desenvolvedor | Um APK, pelo adb (depuração por rede) ou por um app de arquivos |
+| **Resolução da interface** | 1920×1080, ajustada à tela | 1920×1080 (TVs 4K) ou 1280×720 (Full HD e HD), ajustada à tela | 1920×1080, ajustada à tela |
 
 > Testou em outro modelo? Abra uma [issue](../../issues) contando como foi, para entrar nesta tabela.
 
@@ -136,12 +138,12 @@ sensação, a umidade, o vento e as próximas 6 horas; ◀ ou ▼ fecham.
 
 | Parte | O que usa |
 | --- | --- |
-| Interface | HTML5, CSS3 e JavaScript **ES5** (o navegador das TVs Tizen e webOS é antigo), fonte [Inter](https://rsms.me/inter/) |
-| Integração com a TV | Samsung: APIs web do Tizen, `tizen.application` (apps), `tizen.systeminfo` (Wi-Fi e rede) e `tizen.tvwindow` (HDMI). LG: o barramento de serviços do webOS (Luna), com `applicationManager` (apps), `connectionmanager` (rede) e `eim` (HDMI) |
+| Interface | HTML5, CSS3 e JavaScript **ES5** (o navegador das TVs Tizen e webOS é antigo; no Android, a WebView do sistema), fonte [Inter](https://rsms.me/inter/) |
+| Integração com a TV | Samsung: APIs web do Tizen, `tizen.application` (apps), `tizen.systeminfo` (Wi-Fi e rede) e `tizen.tvwindow` (HDMI). LG: o barramento de serviços do webOS (Luna), com `applicationManager` (apps), `connectionmanager` (rede) e `eim` (HDMI). Android: um app nativo pequeno em Java (`android/`), com `PackageManager` (apps), `ConnectivityManager` (rede) e `TvInputManager` (HDMI) |
 | Fotos online | [API do Unsplash](https://unsplash.com/developers) (tópicos de fotos, chave gratuita) ou o arquivo de imagens do dia do Bing (`HPImageArchive`), sem chave |
 | Clima | [Open-Meteo](https://open-meteo.com) (previsão, sem chave) e [ipinfo.io](https://ipinfo.io) para achar a cidade pela internet |
-| Empacotamento | Samsung: Python 3 (`tizen/build.py`) e o `tizen package` do Tizen SDK 10 para assinar. LG: Python 3 (`webos/build.py`), que monta o `.ipk` sem ferramentas da LG |
-| Instalação | Samsung: Python 3 (`tizen/install.py`), que fala o protocolo SDB da TV direto. LG: Python 3 e OpenSSH (`webos/install.py`) |
+| Empacotamento | Samsung: Python 3 (`tizen/build.py`) e o `tizen package` do Tizen SDK 10 para assinar. LG: Python 3 (`webos/build.py`), que monta o `.ipk` sem ferramentas da LG. Android: Python 3 (`android/build.py`) com o Android SDK, sem Gradle |
+| Instalação | Samsung: Python 3 (`tizen/install.py`), que fala o protocolo SDB da TV direto. LG: Python 3 e OpenSSH (`webos/install.py`). Android: Python 3 e adb (`android/install.py`) |
 | Base | Camada de TV do [Free My TV](https://github.com/simbasjungles/free-my-tv) (MIT) |
 
 ---
@@ -272,6 +274,41 @@ webOS Homebrew.
 
 ---
 
+## 🤖 Instalação no Android TV (experimental)
+
+> **Testado só no emulador do Google TV** (Android 14), ainda não numa TV ou num aparelho de verdade. Se algo não
+> funcionar, abra uma [issue](../../issues) com o modelo e a versão do Android.
+
+Vale para TVs com Android TV ou Google TV (Sony, TCL, Philips, Xiaomi e outras) e aparelhos como o Chromecast com
+Google TV e o Mi Box.
+
+**Jeito mais simples: o APK pronto**
+
+1. Na TV, instale um app de arquivos que baixe da internet, como o **Downloader** (da AFTVnews), pela Play Store.
+2. Abra o Downloader e baixe o `DuskTV-Android.apk` da [página de releases](../../releases/latest).
+3. A TV pede permissão para instalar apps de fora da Play Store a partir do Downloader: permita e instale.
+
+**Pelo computador (para quem vai mexer no código)**
+
+1. Na TV: Configurações → Sistema → Sobre → aperte 7 vezes em **Build do sistema operacional**. Volte, abra
+   **Opções do desenvolvedor** e ligue a **Depuração USB** (e a **Depuração por rede**, onde houver).
+2. No computador: instale o [Android Studio](https://developer.android.com/studio), que traz o Android SDK e o adb.
+3. Gere e instale:
+
+```bash
+python android/build.py
+python android/install.py IP_DA_TV
+```
+
+Na primeira vez, a TV pergunta se aceita este computador: aceite. Para testar sem TV, abra um emulador de Android TV
+no Android Studio (Device Manager → Create Device → TV) e use `python android/install.py emulador`.
+
+**Dusk TV como tela inicial (botão Home).** Some o `--home` no comando (`python android/install.py IP_DA_TV --home`)
+ou, quando a TV perguntar qual app usar ao apertar Home, escolha o Dusk TV. Nem toda TV deixa: no Google TV, a
+tela do Google costuma voltar. Mesmo assim, o Dusk TV fica na fileira de apps, a um clique.
+
+---
+
 ## 🎨 Personalização
 
 Toda a identidade visual fica em [`web/config.js`](web/config.js):
@@ -313,8 +350,8 @@ chave nova. Sem chave, ou se o Unsplash não responder, as fotos vêm do Bing.
   [`web/home.js`](web/home.js).
 - **Ver no computador, sem TV:** rode `python -m http.server 8765 -d web` e abra <http://localhost:8765>.
   As setas navegam, Enter abre e Esc volta. Use `#apps` ou `#settings` no endereço para abrir direto numa aba, e
-  `?tv=lg` para ver o visual da LG (por exemplo, <http://localhost:8765/?tv=lg#apps>).
-- **Publicar um pacote:** `python webos/build.py --release` (ou `python tizen/build.py --release`) gera o pacote
+  `?tv=lg` ou `?tv=android` para ver o visual da LG ou do Android (por exemplo, <http://localhost:8765/?tv=lg#apps>).
+- **Publicar um pacote:** `--release` nos três builds (`tizen/`, `webos/` e `android/build.py`) gera o pacote
   sem o `config.local.js`, para a sua chave do Unsplash não ir junto.
 
 ---
@@ -341,6 +378,12 @@ dusk-tv/
 │   ├── build.py          # gera o DuskTV-LG.ipk
 │   ├── install.py        # instala na TV pela rede (SSH do Modo Desenvolvedor)
 │   └── service/          # serviço que pede a lista de apps nas LGs mais novas
+├── android/              # Android TV e Google TV (experimental)
+│   ├── AndroidManifest.xml
+│   ├── src/              # o app nativo: a WebView e a ponte com a TV (Bridge.java)
+│   ├── res/              # ícone e banner da fileira de apps
+│   ├── build.py          # gera o DuskTV-Android.apk, sem Gradle
+│   └── install.py        # instala pelo adb (TV pela rede ou emulador)
 └── docs/                 # capturas de tela
 ```
 
@@ -379,6 +422,14 @@ Request.
 - **Botão Home:** continua abrindo a barra da LG.
 - **Modo Desenvolvedor:** expira se não for renovado (o botão EXTEND no app Developer Mode).
 
+### Android TV / Google TV
+
+- **Botão Home:** depende do aparelho. Em muitos, o Dusk TV pode ser a tela inicial; no Google TV, a tela do Google
+  costuma voltar.
+- **Entradas HDMI:** aparecem nas TVs que mostram as entradas para os apps. Num aparelho como o Chromecast, que não
+  tem entradas, a seção some.
+- **Nome do Wi-Fi:** o Android só o entrega a apps com acesso à localização, então o Dusk mostra só a força do sinal.
+
 ---
 
 ## ↩️ Como desfazer
@@ -387,6 +438,8 @@ Request.
 - **Samsung, pela TV:** Apps → ⚙ → Dusk TV → Excluir.
 - **LG, pelo computador:** `python webos/install.py IP_DA_TV --uninstall`
 - **LG, pela TV:** na barra da LG, segure OK no Dusk TV e escolha remover.
+- **Android, pelo computador:** `python android/install.py IP_DA_TV --uninstall`
+- **Android, pela TV:** Configurações → Apps → Dusk TV → Desinstalar.
 
 ---
 
@@ -400,7 +453,7 @@ Sugestões, correções e versões novas são bem-vindas.
 4. Envie: `git push origin minha-melhoria`.
 5. Abra um **Pull Request**.
 
-Ideias abertas: testar numa LG de verdade, a versão para Android TV, novos temas, mais logos, suporte testado em
+Ideias abertas: testar numa LG e numa Android TV de verdade, novos temas, mais logos, suporte testado em
 outros modelos e telas em outros idiomas.
 
 ---
@@ -410,7 +463,7 @@ outros modelos e telas em outros idiomas.
 - **Inspiração visual:** o launcher "dusk" que [@lucataco](https://x.com/lucataco) mostrou numa TV LG.
 - **Camada de TV, instaladores, pacote da LG e ícones de apoio:** [Free My TV](https://github.com/simbasjungles/free-my-tv)
   (MIT, veja [`LICENSE-FreeMyTV`](LICENSE-FreeMyTV)). O instalador da LG se baseia no FreeMyTvWebOS, de
-  danielthejoker18 (MIT).
+  danielthejoker18 (MIT), e o build do Android sem Gradle, no do Free My TV.
 - **Logos:** [Simple Icons](https://simpleicons.org) (CC0) e Wikimedia Commons. Detalhes em
   [`web/logos/FONTES.txt`](web/logos/FONTES.txt).
 - **Fonte:** [Inter](https://rsms.me/inter/) (SIL Open Font License).
@@ -419,7 +472,7 @@ outros modelos e telas em outros idiomas.
 - **Fotos online:** [Unsplash](https://unsplash.com), com o nome de cada fotógrafo na legenda, e imagens do dia do
   [Bing](https://www.bing.com). As duas são exibidas direto da fonte e não ficam guardadas neste repositório.
 
-> As marcas e logos pertencem aos seus donos. Este projeto não tem ligação com a Samsung, a LG nem com os serviços
+> As marcas e logos pertencem aos seus donos. Este projeto não tem ligação com a Samsung, a LG, o Google nem com os serviços
 > citados.
 
 ---

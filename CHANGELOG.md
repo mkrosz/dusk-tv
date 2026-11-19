@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.1.0] - 2026-11-19
+
+### Novo
+- **Android TV e Google TV, em fase experimental.** Um app Android pequeno (`android/`) mostra a mesma tela numa
+  WebView e entrega à página uma ponte com a TV: a lista de apps com os banners deles, abrir apps, as entradas HDMI
+  (nas TVs que mostram), a força do Wi-Fi ou o cabo, e as telas de Rede, Contas e Privacidade direto nos Ajustes.
+  `python android/build.py` gera o `DuskTV-Android.apk` sem Gradle, e `python android/install.py IP_DA_TV` instala
+  pelo adb (ou `emulador`, para o emulador do Android Studio). Testado só no emulador do Google TV (Android 14).
+- No Android, o canto mostra o nome do fabricante (Sony, TCL, Xiaomi...), a "Loja de apps" abre o Google Play e o
+  cartão de conta vira "Conta Google".
+- O app pode ser a tela inicial (botão Home) onde a TV deixar: `--home` no `install.py`.
+- No navegador do computador, `?tv=android` mostra o visual do Android.
+
+### Mudou
+- Os banners dos apps do Android preenchem o cartão inteiro, como na tela do Google TV.
+- Num aparelho sem entradas (um Chromecast), a seção "Entradas" some de Ajustes.
+- Os favoritos da primeira vez não incluem mais a loja de apps, que já tem o próprio bloco em Apps.
+
 ## [2.0.0] - 2026-11-19
 
 ### Novo

@@ -5,6 +5,7 @@
  * The TV's side of the web home screen: its apps, opening one, its inputs, its settings, the Back key, its time zone.
  *  - LG webOS: the TV's service bus (Luna), the same calls LG's launcher makes.
  *  - Samsung Tizen: Tizen's web APIs (tizen.application for the apps, tizen.tvwindow for the inputs).
+ *  - Android TV / Google TV: Dusk TV's own Android app (android/), which hands the page `DuskAndroid`.
  *  - A desktop browser: a stand-in with sample apps, so the screen can be previewed and tested on a computer.
  * Plain ES5: older TVs run a Chromium from 2015-2017 (webOS 3 and 4, Tizen 3).
  */
@@ -13,6 +14,18 @@ var TV = (function () {
 
   var webos = typeof window.PalmServiceBridge !== 'undefined';
   var samsung = !webos && typeof window.tizen !== 'undefined' && !!window.tizen.application;
+  var android = !webos && !samsung && typeof window.DuskAndroid !== 'undefined';
+
+  /** One call to the Android app (android/src/.../Bridge.java), which answers in JSON; null on failure. */
+  function androidCall(method, arg) {
+    try {
+      var r = arg === undefined ? window.DuskAndroid[method]() : window.DuskAndroid[method](arg);
+      return r ? JSON.parse(r) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+  var androidInfo = android ? androidCall('about') : null;
   var calls = [];   // a bridge is collected if nothing holds it before its reply arrives
   var tizen2 = samsung && /Tizen 2\./.test(navigator.userAgent);
   // Tizen 2 (2016 TVs, WebKit 538) repaints every shadow on every frame of a focus animation: home.css turns them off.
@@ -536,6 +549,8 @@ var TV = (function () {
       property('WIFI_NETWORK', function (v) {
         if (v.status === 'ON' && v.ipAddress && !out.ip) out.ip = v.ipAddress;
       });
+    } else if (android) {
+      out = androidCall('about') || out;
     } else {
       out = {model: 'OLED55C1', firmware: '03.33.85', system: 'webOS 6.0', version: 'preview', ip: '192.168.1.50'};
     }
@@ -545,7 +560,10 @@ var TV = (function () {
   // MARK: - The TV, whichever it is
 
   return {
-    name: webos ? 'webos' : samsung ? 'tizen' : 'browser',
+    name: webos ? 'webos' : samsung ? 'tizen' : android ? 'android' : 'browser',
+
+    /** Android: who made the TV or box ("TCL", "Sony", "Xiaomi"), for the corner when there's no logo. */
+    maker: androidInfo && androidInfo.maker || '',
 
     /**
      * Whether an app can open the TV's settings. Not on Tizen 2 (a 2016 KU6300): the "settings" request and
@@ -556,6 +574,7 @@ var TV = (function () {
     /** Installed apps, as the TV's launcher lists them: [{id, title, icon, color}]. */
     apps: function (done) {
       if (samsung) { samsungApps(done); return; }
+      if (android) { setTimeout(function () { done(androidCall('apps') || []); }, 0); return; }
       if (!webos) {
         done(SAMPLE.map(function (s) { return {id: s[0], title: s[1], icon: '', color: s[2]}; }));
         return;
@@ -602,6 +621,11 @@ var TV = (function () {
         else samsungLaunch(id, done);
         return;
       }
+      if (android) {
+        var opened = androidCall('launch', id) === true;
+        if (done) setTimeout(function () { done(opened); }, 0);
+        return;
+      }
       if (!webos) {
         if (done) setTimeout(function () { done(true); }, 0);
         return;
@@ -614,6 +638,8 @@ var TV = (function () {
     /** The antenna and HDMI inputs; `connected` when the TV says a device is on (when it tells). */
     inputs: function (done) {
       if (samsung) { samsungInputs(done); return; }
+      // Android: the TV's inputs (none on a box like a Chromecast, and then Settings leaves the section out).
+      if (android) { setTimeout(function () { done(androidCall('inputs') || []); }, 0); return; }
       var list = INPUTS.map(function (x) { return {id: x.id, key: x.key, label: x.label, symbol: x.symbol, connected: true}; });
       if (!webos) {
         list[2].connected = false;
@@ -642,12 +668,18 @@ var TV = (function () {
     /** The TV's own settings; done(ok). */
     settings: function (done) {
       if (samsung) samsungSettings(done);
+      else if (android) { var r = androidCall('settings', ''); if (done) setTimeout(function () { done(!!(r && r.ok)); }, 0); }
       else this.launch('com.palm.app.settings', null, done);
     },
 
     /** How the TV is connected, for the Wi-Fi icon: {type: 'wifi' | 'ethernet' | 'none', bars: 0-4, ssid}. */
     network: function (done) {
       if (samsung) { samsungNetwork(done); return; }
+      if (android) {
+        var n = androidCall('network') || {type: 'none', bars: 0, ssid: ''};
+        setTimeout(function () { done(n); }, 0);
+        return;
+      }
       if (!webos) { setTimeout(function () { done({type: 'wifi', bars: 3, ssid: 'Casa'}); }, 0); return; }
       luna('luna://com.palm.connectionmanager/getStatus', {}, function (res) {
         var wired = res && res.wired || {}, wifi = res && res.wifi || {};
@@ -663,6 +695,12 @@ var TV = (function () {
      */
     system: function (kind, done) {
       var self2 = this;
+      // Android opens most settings pages directly; `direct` is false when only the main settings opened.
+      if (android) {
+        var page = androidCall('settings', kind) || {ok: false, direct: false};
+        if (done) setTimeout(function () { done(!!page.ok, !!page.direct); }, 0);
+        return;
+      }
       // LG lets apps open only its main settings: the page asked for is a step away from there.
       if (webos) { this.settings(function (ok) { if (done) done(ok, false); }); return; }
       if (!samsung) { if (done) setTimeout(function () { done(true, true); }, 0); return; }
@@ -676,6 +714,7 @@ var TV = (function () {
     /** Samsung's notification panel (else the TV's settings); done(ok, how). */
     notifications: function (done) {
       if (samsung) { samsungNotifications(done); return; }
+      if (android) { this.settings(function (ok) { if (done) done(ok, 'settings'); }); return; }
       if (done) setTimeout(function () { done(true, 'preview'); }, 0);
     },
 
@@ -691,6 +730,7 @@ var TV = (function () {
         try { window.tizen.application.getCurrentApplication().hide(); } catch (e) {}
         return;
       }
+      if (android) { try { window.DuskAndroid.back(); } catch (e) {} return; }
       if (window.PalmSystem && window.PalmSystem.platformBack) window.PalmSystem.platformBack();
     },
 
@@ -702,7 +742,7 @@ var TV = (function () {
       try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; }
     },
 
-    /** Key codes: the arrows, OK and the TV's Back (LG 461, Samsung 10009). */
-    keys: {left: 37, up: 38, right: 39, down: 40, ok: 13, back: samsung ? 10009 : 461}
+    /** Key codes: the arrows, OK and the TV's Back (LG 461, Samsung 10009, Android 4: the app passes it on). */
+    keys: {left: 37, up: 38, right: 39, down: 40, ok: 13, back: samsung ? 10009 : android ? 4 : 461}
   };
 })();
