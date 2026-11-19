@@ -1,0 +1,15 @@
+{
+  "id": "io.dusktv.home",
+  "version": "2.0.0",
+  "vendor": "Dusk TV",
+  "type": "web",
+  "main": "index.html",
+  "title": "Dusk TV",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "iconColor": "#1B1F3A",
+  "resolution": "1920x1080",
+  "handlesRelaunch": true,
+  "disableBackHistoryAPI": true,
+  "requiredPermissions": ["applications", "applications.launcher"]
+}

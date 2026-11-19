@@ -1,5 +1,5 @@
 Logos dos apps (as marcas são dos seus donos; uso pessoal na própria TV)
-- Simple Icons 13.0.0 (CC0), https://simpleicons.org: samsung, netflix, youtube, youtubekids, youtubemusic, primevideo,
+- Simple Icons 13.0.0 (CC0), https://simpleicons.org: samsung, lg, netflix, youtube, youtubekids, youtubemusic, primevideo,
   hbo, appletv, spotify, twitch, crunchyroll, plex, paramountplus, smartthings, tubi, mubi, dazn, jellyfin, steam,
   playstation, nvidia, discord, tiktok, kick, pinterest, starz. Recoloridos para os cards.
 - Disney+: https://commons.wikimedia.org/wiki/File:Disney%2B_logo.svg (via o fork free-my-tv-tizen, PD-textlogo).

@@ -1,6 +1,6 @@
 ﻿/*
- * Dusk TV: the home screen. Three tabs (Início, Apps, Ajustes), a clock, the network and Samsung's notifications,
- * moved with the remote's arrows. Plain ES5, like tv.js.
+ * Dusk TV: the home screen, for Samsung (Tizen) and LG (webOS) TVs. Three tabs (Início, Apps, Ajustes), a clock,
+ * the network and the weather, moved with the remote's arrows. Plain ES5, like tv.js.
  */
 (function () {
   'use strict';
@@ -60,8 +60,27 @@
       '<path d="M17 20v-6a7 7 0 0 1 14 0v6M24 25v11M18.5 30.5h11" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>'
   };
 
-  // Samsung's app store ("Apps" in Smart Hub): its own tile in the Apps tab, not one of the apps.
-  var STORE_ID = 'com.samsung.tv.store', STORE_TILE = 'dusk:store';
+  // What changes from one TV brand to another: the logo, the app store, the account and where things are in the TV's
+  // settings. Samsung lets apps open its settings but not a given page, and LG only its main settings: `where` is the
+  // path the toast shows from there. `game` and `notifications` are Samsung-only cards.
+  // In a desktop browser, ?tv=lg (or ?tv=samsung) in the address previews one brand.
+  var BRANDS = {
+    samsung: {
+      name: 'Samsung', logo: 'logos/samsung.svg', store: 'com.samsung.tv.store', storeColor: '#1428A0',
+      account: 'Conta Samsung', game: true, notifications: true,
+      where: {network: 'Geral → Rede', account: 'Geral → Gerenciador do sistema → Conta Samsung', privacy: 'Geral → Termos e Privacidade'}
+    },
+    lg: {
+      name: 'LG', logo: 'logos/lg.svg', store: 'com.webos.app.discovery', storeColor: '#A50034',
+      account: 'Conta LG', game: false, notifications: false,
+      where: {network: 'Geral → Rede', account: 'Geral → Conta LG', privacy: 'Suporte → Privacidade e termos'}
+    }
+  };
+  var PLATFORM = (/[?&]tv=(lg|samsung)\b/.exec(location.search) || [])[1] || (TV.name === 'webos' ? 'lg' : 'samsung');
+  var BRAND = BRANDS[PLATFORM];
+
+  // The TV's app store (Samsung's "Apps", LG Content Store): its own tile in the Apps tab, not one of the apps.
+  var STORE_ID = BRAND.store, STORE_TILE = 'dusk:store';
 
   // The apps' own logos (web/logos), by the app's name: [name, file, tile color, shape]. These win over the TV's
   // icons, which are small tiles with their own frames. Shape: '' a symbol, 'wide' a wordmark drawn at its own
@@ -606,7 +625,7 @@
   }
 
   function storeTile() {
-    var el = tile({id: STORE_TILE, title: 'Loja de apps', icon: '', color: '#1428A0'}, 0);
+    var el = tile({id: STORE_TILE, title: 'Loja de apps', icon: '', color: BRAND.storeColor}, 0);
     var face = $('.card', el);
     face.innerHTML = SVG.store;
     el.onAction = function () {
@@ -673,18 +692,22 @@
       toast('Favoritos restaurados');
     }));
 
-    // Samsung lets apps open its settings, but not a given page: the subtitle says where to go from there.
+    // The TV opens its settings, rarely a given page: the toast says where to go from there.
     var system = $('#settings .system');
     system.innerHTML = '';
     system.appendChild(card(SVG.network, 'Rede e Wi-Fi', 'Conexão, Wi-Fi e status da rede',
-        function () { openTvSettings('network', 'Rede e Wi-Fi', 'Geral → Rede'); }));
-    system.appendChild(card(SVG.account, 'Conta Samsung', 'Entrar, sair e dados da conta',
-        function () { openTvSettings('account', 'Conta Samsung', 'Geral → Gerenciador do sistema → Conta Samsung'); }));
+        function () { openTvSettings('network', 'Rede e Wi-Fi', BRAND.where.network); }));
+    system.appendChild(card(SVG.account, BRAND.account, 'Entrar, sair e dados da conta',
+        function () { openTvSettings('account', BRAND.account, BRAND.where.account); }));
     system.appendChild(card(SVG.privacy, 'Privacidade', 'Termos, privacidade e anúncios',
-        function () { openTvSettings('privacy', 'Privacidade', 'Geral → Termos e Privacidade'); }));
-    system.appendChild(card(SVG.gamepad, 'Ajustes de jogo', 'Controladores, saída de som e imagem de jogo',
-        function () { openTvSettings('quick', 'os Ajustes de jogo', ''); }));
-    system.appendChild(card(SVG.bellcard, 'Notificações', 'Em teste: por enquanto abre os Ajustes da TV', openNotifications));
+        function () { openTvSettings('privacy', 'Privacidade', BRAND.where.privacy); }));
+    if (BRAND.game) {
+      system.appendChild(card(SVG.gamepad, 'Ajustes de jogo', 'Controladores, saída de som e imagem de jogo',
+          function () { openTvSettings('quick', 'os Ajustes de jogo', ''); }));
+    }
+    if (BRAND.notifications) {
+      system.appendChild(card(SVG.bellcard, 'Notificações', 'Em teste: por enquanto abre os Ajustes da TV', openNotifications));
+    }
     system.appendChild(card(SVG.gear, 'Ajustes da TV', 'Imagem, som, suporte e tudo mais',
         function () { openTvSettings('', 'os Ajustes da TV', ''); }));
 
@@ -1090,15 +1113,17 @@
     fit();
     window.addEventListener('resize', fit);
     applyAccent();
-    var brand = $('#brand');
-    if (CONF.logo) {
+    // 'auto' (or nothing set): the TV's own brand.
+    var brand = $('#brand'), brandName = !CONF.brand || CONF.brand === 'auto' ? BRAND.name : CONF.brand;
+    var brandLogo = CONF.logo === undefined || CONF.logo === 'auto' ? BRAND.logo : CONF.logo;
+    if (brandLogo) {
       var logo = new Image();
-      logo.alt = CONF.brand || '';
-      logo.onerror = function () { brand.textContent = CONF.brand || ''; };
-      logo.src = CONF.logo;
+      logo.alt = brandName;
+      logo.onerror = function () { brand.textContent = brandName; };
+      logo.src = brandLogo;
       brand.appendChild(logo);
     } else {
-      brand.textContent = CONF.brand || '';
+      brand.textContent = brandName;
     }
     drawWeather();
     wrapScrollers();

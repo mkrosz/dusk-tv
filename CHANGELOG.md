@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.0.0] - 2026-11-19
+
+### Novo
+- **TVs LG (webOS), em fase experimental.** O mesmo app agora gera um pacote para LG: `python webos/build.py` cria o
+  `DuskTV-LG.ipk`, sem precisar de ferramentas da LG, e `python webos/install.py IP_DA_TV` instala pela rede, com o
+  Modo Desenvolvedor da LG. Em TVs que não são 4K, ele entra em 1280×720 sozinho. Ainda não foi testado numa LG de
+  verdade; o código de TV da LG vem do Free My TV.
+- **O app segue a marca da TV:** na LG, aparecem o logo da LG, a LG Content Store no bloco "Loja de apps" e o cartão
+  "Conta LG". Os cartões "Ajustes de jogo" e "Notificações" ficam só na Samsung.
+- `logo` e `brand` no `config.js` aceitam `'auto'`, o novo padrão, que usa o logo e o nome da marca da TV.
+- No navegador do computador, `?tv=lg` no endereço mostra o visual da LG.
+- `--release` nos dois builds gera o pacote sem o `config.local.js`, para publicar sem a chave do Unsplash.
+
+### Mudou
+- O repositório passou a se chamar `dusk-tv`, e o README ganhou a tabela **Escolha sua TV**.
+- Prints novas, com uma foto do Unsplash de fundo e a previsão do tempo aberta na barra superior. A seção "Antes e
+  depois" saiu do README.
+
+### Corrigido
+- Fora da Samsung, os cartões Rede, Conta e Privacidade não abriam nada. Na LG, eles abrem os Ajustes da TV e
+  mostram o caminho a seguir.
+
 ## [1.9.0] - 2026-10-28
 
 ### Novo

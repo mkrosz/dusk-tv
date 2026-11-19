@@ -2,9 +2,11 @@
  * A identidade visual do Dusk TV. Mude aqui, gere o app de novo (python tizen/build.py ...) e instale.
  */
 window.DUSK = {
-  // Logo no canto superior esquerdo (um arquivo em web/). Vazio: mostra o texto de `brand`.
-  logo: 'logos/samsung.svg',
-  brand: 'Samsung',
+  // Logo no canto superior esquerdo. 'auto': o da marca da TV (Samsung ou LG). Também aceita um arquivo em web/,
+  // como 'logos/samsung.svg', ou vazio para mostrar só o texto de `brand`.
+  logo: 'auto',
+  // Nome da marca, usado quando não há logo. 'auto': o da TV.
+  brand: 'auto',
   // Cor de destaque: o contorno do item em foco.
   accent: '#8CB2F3',
   // Fundo: 'online' (fotos novas da internet, com as salvas quando estiver sem internet) ou 'salvas'.

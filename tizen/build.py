@@ -3,6 +3,7 @@
 
     python tizen/build.py                  # DuskTV.wgt, ainda sem assinatura
     python tizen/build.py --sign PERFIL    # assinado com um perfil de certificado do Tizen Studio
+    python tizen/build.py --release        # sem o web/config.local.js (a sua chave do Unsplash), para publicar
 
 A TV só instala pacotes assinados. Para TVs de 2015 a 2022 (a sua UN60AU8000 é de 2021) serve um certificado
 Tizen comum, criado no Certificate Manager do Tizen Studio. Veja LEIA-ME.md.
@@ -54,9 +55,9 @@ def sign(profile):
         sys.exit('O pacote voltou sem as assinaturas.')
 
 
-def inlined_index():
+def inlined_index(release=False):
     """index.html with home.css and the scripts written inside it: on the AU8000 each file the page loads took
-    100-300 ms before the first screen, so the package carries one page."""
+    100-300 ms before the first screen, so the package carries one page. A release leaves config.local.js out."""
     def read(name):
         with open(os.path.join(WEB, name), encoding='utf-8-sig') as f:
             return f.read()
@@ -64,7 +65,7 @@ def inlined_index():
     html = html.replace('<link rel="stylesheet" href="home.css">', '<style>\n%s\n</style>' % read('home.css'))
     for name in re.findall(r'<script src="([^"]+)"></script>', html):
         # config.local.js (your Unsplash key, kept out of git) is optional.
-        if not os.path.exists(os.path.join(WEB, name)):
+        if not os.path.exists(os.path.join(WEB, name)) or (release and name == 'config.local.js'):
             html = html.replace('<script src="%s"></script>' % name, '')
             continue
         code = read(name)
@@ -74,13 +75,13 @@ def inlined_index():
     return html.encode('utf-8')
 
 
-def build(profile):
+def build(profile, release=False):
     with open(os.path.join(ROOT, 'tizen', 'config.xml'), encoding='utf-8') as f:
         manifest = f.read()
     version = re.search(r'<widget [^>]*version="([^"]+)"', manifest).group(1)
     with zipfile.ZipFile(WGT, 'w', zipfile.ZIP_DEFLATED) as z:
         bundled = ('index.html', 'home.css', 'config.js', 'config.local.js', 'config.local.example.js', 'tv.js', 'home.js')
-        z.writestr('index.html', inlined_index())
+        z.writestr('index.html', inlined_index(release))
         for folder, _, names in os.walk(WEB):
             for name in sorted(names):
                 path = os.path.join(folder, name)
@@ -97,4 +98,4 @@ def build(profile):
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    build(args[args.index('--sign') + 1] if '--sign' in args else None)
+    build(args[args.index('--sign') + 1] if '--sign' in args else None, '--release' in args)

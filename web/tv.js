@@ -663,6 +663,8 @@ var TV = (function () {
      */
     system: function (kind, done) {
       var self2 = this;
+      // LG lets apps open only its main settings: the page asked for is a step away from there.
+      if (webos) { this.settings(function (ok) { if (done) done(ok, false); }); return; }
       if (!samsung) { if (done) setTimeout(function () { done(true, true); }, 0); return; }
       if (kind === 'quick') { samsungQuick(function (ok) { if (ok) { if (done) done(true, true); } else self2.settings(function (ok2) { if (done) done(ok2, false); }); }); return; }
       samsungFirst(SYSTEM_APPS[kind] || [], function (ok) {
