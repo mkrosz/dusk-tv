@@ -27,7 +27,6 @@ sem fileiras patrocinadas.
 
 ## Sumário
 
-- [Antes e depois](#-antes-e-depois)
 - [Telas](#-telas)
 - [Funcionalidades](#-funcionalidades)
 - [Compatibilidade](#-compatibilidade)
@@ -40,18 +39,6 @@ sem fileiras patrocinadas.
 - [Contribuindo](#-contribuindo)
 - [Créditos](#-créditos)
 - [Licença](#-licença)
-
----
-
-## 🔄 Antes e depois
-
-| Antes (Smart Hub da Samsung) | Depois (Dusk TV) |
-| :---: | :---: |
-| <img src="docs/antes/antes-inicio.jpg" alt="Tela inicial original da Samsung" width="420"> | <img src="docs/screenshots/inicio.png" alt="Tela inicial do Dusk TV" width="420"> |
-| <img src="docs/antes/antes-apps.jpg" alt="Lista de apps original da Samsung" width="420"> | <img src="docs/screenshots/apps.png" alt="Apps no Dusk TV" width="420"> |
-| <img src="docs/antes/antes-ajustes.jpg" alt="Menu original da Samsung" width="420"> | <img src="docs/screenshots/ajustes.png" alt="Ajustes no Dusk TV" width="420"> |
-
-> 📸 Para trocar as fotos do "antes", substitua os arquivos de [`docs/antes/`](docs/antes) mantendo os mesmos nomes.
 
 ---
 
@@ -283,7 +270,7 @@ dusk-tv-samsung/
 │   ├── config.xml        # manifesto do app Tizen (id, versão, permissões)
 │   ├── build.py          # gera e assina o DuskTV.wgt
 │   └── install.py        # instala na TV pela rede
-└── docs/                 # capturas de tela e fotos do "antes"
+└── docs/                 # capturas de tela
 ```
 
 ---
